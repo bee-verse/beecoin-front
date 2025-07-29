@@ -1,0 +1,29 @@
+@import 'tailwindcss';
+
+:root {
+  /* Define your bee-themed colors as CSS variables */
+  --color-bee-yellow: #FFB300;
+  --color-bee-black: #212121;
+  --color-bee-orange: #FF5500;
+  --color-bee-amber: #FF9500;
+  --color-bee-gold: #FFB000;
+  --color-bee-honey: #FF8000;
+  
+  /* Text colors */
+  --color-text-base: #212121;
+  --color-text-muted: #4b5563;
+  --color-text-inverted: #ffffff;
+  --color-text-accent: var(--color-bee-honey);
+}
+
+.dark {
+  --color-text-base: #f9fafb;
+  --color-text-muted: #d1d5db;
+  --color-text-inverted: #212121;
+}
+
+body {
+  font-family: 'Inter', sans-serif;
+  min-height: 100vh;
+  color: var(--color-text-base);
+}

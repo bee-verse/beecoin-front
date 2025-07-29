@@ -1,0 +1,32 @@
+<svg width="200" height="200" viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
+  <!-- Body -->
+  <ellipse cx="100" cy="110" rx="45" ry="35" fill="#FFC107" stroke="#000" stroke-width="2"/>
+  
+  <!-- Stripes -->
+  <path d="M70 95 Q100 85 130 95" stroke="#000" stroke-width="4" fill="none"/>
+  <path d="M70 110 Q100 100 130 110" stroke="#000" stroke-width="4" fill="none"/>
+  <path d="M70 125 Q100 115 130 125" stroke="#000" stroke-width="4" fill="none"/>
+  
+  <!-- Wings -->
+  <ellipse cx="70" cy="80" rx="25" ry="15" fill="rgba(255, 255, 255, 0.7)" stroke="#000" stroke-width="1" transform="rotate(-30 70 80)"/>
+  <ellipse cx="130" cy="80" rx="25" ry="15" fill="rgba(255, 255, 255, 0.7)" stroke="#000" stroke-width="1" transform="rotate(30 130 80)"/>
+  
+  <!-- Head -->
+  <circle cx="100" cy="75" r="20" fill="#FFC107" stroke="#000" stroke-width="2"/>
+  
+  <!-- Eyes -->
+  <circle cx="90" cy="70" r="5" fill="#000"/>
+  <circle cx="110" cy="70" r="5" fill="#000"/>
+  
+  <!-- Antenna -->
+  <path d="M85 60 Q75 40 65 35" stroke="#000" stroke-width="2" fill="none"/>
+  <path d="M115 60 Q125 40 135 35" stroke="#000" stroke-width="2" fill="none"/>
+  <circle cx="65" cy="35" r="3" fill="#000"/>
+  <circle cx="135" cy="35" r="3" fill="#000"/>
+  
+  <!-- Smile -->
+  <path d="M90 85 Q100 95 110 85" stroke="#000" stroke-width="2" fill="none"/>
+  
+  <!-- Stinger -->
+  <path d="M100 145 L100 160" stroke="#000" stroke-width="2" fill="none"/>
+</svg>
