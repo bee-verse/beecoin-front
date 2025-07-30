@@ -1,6 +1,5 @@
 <script setup lang="ts">
-import { ref, onMounted, onUnmounted, watch } from 'vue'
-import { MainButton } from '@twa-dev/sdk/react'
+import { onMounted, onUnmounted, watch } from 'vue'
 import WebApp from '@twa-dev/sdk'
 
 const props = withDefaults(
@@ -36,16 +35,6 @@ onMounted(() => {
   // Устанавливаем текст кнопки
   if (props.text) {
     WebApp.MainButton.setText(props.text)
-  }
-
-  // Устанавливаем цвет кнопки
-  if (props.color) {
-    WebApp.MainButton.setBackgroundColor(props.color)
-  }
-
-  // Устанавливаем цвет текста кнопки
-  if (props.textColor) {
-    WebApp.MainButton.setTextColor(props.textColor)
   }
 
   // Устанавливаем состояние кнопки
@@ -90,24 +79,6 @@ watch(
 )
 
 watch(
-  () => props.color,
-  (newColor) => {
-    if (newColor) {
-      WebApp.MainButton.setBackgroundColor(newColor)
-    }
-  },
-)
-
-watch(
-  () => props.textColor,
-  (newTextColor) => {
-    if (newTextColor) {
-      WebApp.MainButton.setTextColor(newTextColor)
-    }
-  },
-)
-
-watch(
   () => props.disabled,
   (newDisabled) => {
     if (newDisabled) {
@@ -140,7 +111,3 @@ watch(
   },
 )
 </script>
-
-<template>
-  <!-- Компонент не имеет визуального представления, так как использует нативную кнопку Telegram -->
-</template>

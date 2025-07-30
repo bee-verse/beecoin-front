@@ -13,7 +13,7 @@ const DEFAULT_HEIGHT = 480
 const SMALL_SCREEN_BREAKPOINT = 480
 
 // Constants for model scaling
-const MODEL_SCALE_FACTOR = 5.0
+const MODEL_SCALE_FACTOR = 6.0
 const SCALE_ANIMATION_SPEED = 0.03
 const MIN_SCALE_FACTOR = 0.9
 
@@ -208,7 +208,11 @@ onBeforeUnmount(() => {
   <div
     ref="containerRef"
     class="bee-mesh-container"
-    :style="{ width: '100%', maxWidth: `${width || DEFAULT_WIDTH}px`, height: `${height || DEFAULT_HEIGHT}px` }"
+    :style="{
+      width: '100%',
+      maxWidth: `${width || DEFAULT_WIDTH}px`,
+      height: `${height || DEFAULT_HEIGHT}px`,
+    }"
     @click="handleClick"
     @touchstart.stop="handleClick"
   ></div>
