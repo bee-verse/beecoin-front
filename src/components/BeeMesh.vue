@@ -3,6 +3,8 @@ import { ref, onMounted, onBeforeUnmount } from 'vue'
 import * as THREE from 'three'
 // Import GLTFLoader for loading custom 3D models
 import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js'
+// Import DRACOLoader for compressed models
+import { DRACOLoader } from 'three/examples/jsm/loaders/DRACOLoader.js'
 import { BeeModelLoader } from './three/BeeModelLoader'
 import { BeeRenderer } from './three/BeeRenderer'
 import type { RendererSettings } from './three/BeeRenderer'
@@ -67,6 +69,16 @@ const setupScene = () => {
 
   // Try to load the custom model first, fallback to placeholder if it fails
   const loader = new GLTFLoader()
+  
+  // Setup DRACOLoader for compressed models
+  const dracoLoader = new DRACOLoader()
+  dracoLoader.setDecoderPath('/node_modules/three/examples/jsm/libs/draco/')
+  // Preload the decoder
+  dracoLoader.preload()
+  
+  // Attach DRACOLoader to GLTFLoader
+  loader.setDRACOLoader(dracoLoader)
+  
   loader.load(
     props.modelPath,
     (gltf) => {

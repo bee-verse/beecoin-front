@@ -81,7 +81,7 @@ const tapBee = (event?: Event) => {
 
       <div class="bee-container relative mb-8 w-full mx-auto">
         <BeeMesh
-          modelPath="/models/bee2.glb"
+          modelPath="/models/bee2-comp.glb"
           :width="480"
           :height="480"
           @click="tapBee"
