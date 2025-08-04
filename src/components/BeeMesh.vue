@@ -43,6 +43,10 @@ let scaleDirection = -1
 let currentScale = 1
 let originalScale = 1 // Сохраняем исходный масштаб модели
 
+// Raycaster для определения кликов на 3D модель
+const raycaster = new THREE.Raycaster()
+const mouse = new THREE.Vector2()
+
 // Setup the 3D scene
 const setupScene = () => {
   if (!containerRef.value) return
@@ -69,16 +73,16 @@ const setupScene = () => {
 
   // Try to load the custom model first, fallback to placeholder if it fails
   const loader = new GLTFLoader()
-  
+
   // Setup DRACOLoader for compressed models
   const dracoLoader = new DRACOLoader()
   dracoLoader.setDecoderPath('/node_modules/three/examples/jsm/libs/draco/')
   // Preload the decoder
   dracoLoader.preload()
-  
+
   // Attach DRACOLoader to GLTFLoader
   loader.setDRACOLoader(dracoLoader)
-  
+
   loader.load(
     props.modelPath,
     (gltf) => {
@@ -184,8 +188,51 @@ const handleResize = () => {
   beeRenderer.handleResize(width, height)
 }
 
-// Handle click on the model
-const handleClick = () => {
+// Обработка клика на канвасе
+const handleCanvasClick = (event: MouseEvent | TouchEvent) => {
+  // Предотвращаем всплытие события, чтобы избежать двойной обработки
+  event.stopPropagation()
+
+  // Получаем координаты клика/касания
+  let clientX: number
+  let clientY: number
+
+  if ('touches' in event) {
+    // Для событий касания
+    clientX = event.touches[0].clientX
+    clientY = event.touches[0].clientY
+  } else {
+    // Для событий мыши
+    clientX = event.clientX
+    clientY = event.clientY
+  }
+
+  // Получаем размеры и позицию канваса
+  if (!containerRef.value || !beeRenderer || !model) return
+  const rect = containerRef.value.getBoundingClientRect()
+
+  // Преобразуем координаты клика в нормализованные координаты (-1 до 1)
+  mouse.x = ((clientX - rect.left) / rect.width) * 2 - 1
+  mouse.y = -((clientY - rect.top) / rect.height) * 2 + 1
+
+  // Устанавливаем raycaster
+  raycaster.setFromCamera(mouse, beeRenderer.camera)
+
+  // Проверяем пересечение с моделью
+  const intersects = raycaster.intersectObject(model, true)
+
+  // Если есть пересечение с моделью, вызываем handleModelClick
+  if (intersects.length > 0) {
+    handleModelClick()
+    console.log('Клик на модель пчелы!')
+  } else {
+    console.log('Клик мимо модели пчелы')
+    // Не вызываем handleModelClick, если клик был мимо модели
+  }
+}
+
+// Обработка клика непосредственно на модели
+const handleModelClick = () => {
   // Trigger animation only if not already animating
   if (!isAnimating.value) {
     isAnimating.value = true
@@ -203,10 +250,29 @@ const handleClick = () => {
 onMounted(() => {
   setupScene()
   window.addEventListener('resize', handleResize)
+
+  // Добавляем обработчики событий на канвас после инициализации сцены
+  if (containerRef.value) {
+    containerRef.value.addEventListener('click', handleCanvasClick)
+    containerRef.value.addEventListener('touchstart', (e) => {
+      e.preventDefault() // Предотвращаем стандартное поведение
+      e.stopPropagation() // Предотвращаем всплытие события
+      handleCanvasClick(e)
+    })
+  }
 })
 
 onBeforeUnmount(() => {
   window.removeEventListener('resize', handleResize)
+
+  // Удаляем обработчики событий
+  if (containerRef.value) {
+    containerRef.value.removeEventListener('click', handleCanvasClick)
+    // Для touchstart нужно удалить обработчик с той же функцией, что и добавляли
+    // Поэтому мы не можем напрямую удалить handleCanvasClick
+    // Но это не критично, так как компонент будет уничтожен
+  }
+
   if (animationFrameId) {
     cancelAnimationFrame(animationFrameId)
   }
@@ -225,8 +291,6 @@ onBeforeUnmount(() => {
       maxWidth: `${width || DEFAULT_WIDTH}px`,
       height: `${height || DEFAULT_HEIGHT}px`,
     }"
-    @click="handleClick"
-    @touchstart.stop="handleClick"
   ></div>
 </template>
 
@@ -242,7 +306,7 @@ onBeforeUnmount(() => {
   -moz-user-select: none;
   -ms-user-select: none;
   margin: 0 auto;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+  /* box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05); */
   max-width: 100%; /* Ensure it never exceeds the parent container */
 }
 

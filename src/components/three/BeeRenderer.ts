@@ -45,6 +45,10 @@ export class BeeRenderer {
     this.controls.enableDamping = true
     this.controls.dampingFactor = 0.05
     this.controls.enableZoom = false // Отключаем зум для лучшего опыта на мобильных устройствах
+    
+    // Ограничиваем вращение только по горизонтальной оси (оси Y)
+    this.controls.minPolarAngle = Math.PI / 2; // 90 градусов
+    this.controls.maxPolarAngle = Math.PI / 2; // 90 градусов
   }
 
   /**
