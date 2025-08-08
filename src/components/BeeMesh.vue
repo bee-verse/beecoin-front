@@ -19,10 +19,7 @@ const MODEL_SCALE_FACTOR = 6.0
 const SCALE_ANIMATION_SPEED = 0.03
 const MIN_SCALE_FACTOR = 0.9
 
-// Constants for rotation and animation
-const ROTATION_SPEED = 0.005
-const BOUNCE_SPEED = 0.01
-const BOUNCE_MAX = 0.2
+// Constants for animation (bounce effect removed)
 
 const props = defineProps<{
   modelPath: string
@@ -130,9 +127,7 @@ const setupScene = () => {
   )
 }
 
-// Animation variables
-let bounceDirection = 1
-let bounceHeight = 0
+// Animation variables (bounce effect removed)
 
 // Animation loop
 const animate = () => {
@@ -141,15 +136,11 @@ const animate = () => {
   animationFrameId = requestAnimationFrame(animate)
 
   if (model) {
-    // Rotate the model slowly
-    model.rotation.y += ROTATION_SPEED
+    // Rotation removed as per requirement
 
-    // Add a gentle bouncing effect
-    bounceHeight += BOUNCE_SPEED * bounceDirection
-    if (bounceHeight > BOUNCE_MAX || bounceHeight < 0) {
-      bounceDirection *= -1
-    }
-    model.position.y = bounceHeight
+    // Bouncing effect removed to keep model fixed in center
+    // Model position is fixed at center (y=0)
+    model.position.y = 0
 
     // If animating (on tap), add a scale effect
     if (isAnimating.value) {

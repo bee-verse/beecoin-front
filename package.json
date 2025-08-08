@@ -14,6 +14,7 @@
     "format": "prettier --write src/"
   },
   "dependencies": {
+    "@supabase/supabase-js": "^2.54.0",
     "@twa-dev/sdk": "^8.0.2",
     "@types/three": "^0.178.1",
     "autoprefixer": "^10.4.21",

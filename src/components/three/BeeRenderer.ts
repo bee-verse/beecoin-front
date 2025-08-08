@@ -40,11 +40,12 @@ export class BeeRenderer {
     // Добавляем освещение
     this.setupLights()
 
-    // Добавляем контроллы
+    // Добавляем контроллы только для вращения, без возможности перемещения
     this.controls = new OrbitControls(this.camera, this.renderer.domElement)
     this.controls.enableDamping = true
     this.controls.dampingFactor = 0.05
     this.controls.enableZoom = false // Отключаем зум для лучшего опыта на мобильных устройствах
+    this.controls.enablePan = false // Отключаем перемещение модели
     
     // Ограничиваем вращение только по горизонтальной оси (оси Y)
     this.controls.minPolarAngle = Math.PI / 2; // 90 градусов

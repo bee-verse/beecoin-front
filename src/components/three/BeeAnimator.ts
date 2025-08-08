@@ -9,7 +9,7 @@ export class BeeAnimator {
   private currentScale: number
   private isAnimating: boolean = false
   private scaleDirection: number = -1
-  
+
   // Переменные для анимации подпрыгивания
   private bounceDirection: number = 1
   private bounceHeight: number = 0
