@@ -1,9 +1,8 @@
 {
   "version": 2,
-  "routes": [
-    { "handle": "filesystem" },
-    { "src": "/draco/(.*)", "dest": "/draco/$1" },
-    { "src": "/models/(.*)", "dest": "/models/$1" }
+  "rewrites": [
+    { "source": "/draco/(.*)", "destination": "/draco/$1" },
+    { "source": "/models/(.*)", "destination": "/models/$1" }
   ],
   "headers": [
     {

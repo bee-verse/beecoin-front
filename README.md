@@ -52,10 +52,9 @@ npm run build
 ```json
 {
   "version": 2,
-  "routes": [
-    { "handle": "filesystem" },
-    { "src": "/draco/(.*)", "dest": "/draco/$1" },
-    { "src": "/models/(.*)", "dest": "/models/$1" }
+  "rewrites": [
+    { "source": "/draco/(.*)", "destination": "/draco/$1" },
+    { "source": "/models/(.*)", "destination": "/models/$1" }
   ],
   "headers": [
     {
@@ -81,6 +80,8 @@ npm run build
 ```
 
 Этот файл настраивает маршрутизацию для директорий `/draco/` и `/models/`, что необходимо для корректной загрузки DRACO декодера и 3D-модели пчелы.
+
+> **Важно:** В конфигурации Vercel нельзя одновременно использовать поле `routes` вместе с полями `rewrites`, `redirects`, `headers`, `cleanUrls` или `trailingSlash`. Поэтому мы используем `rewrites` вместо `routes` для настройки маршрутизации.
 
 ## Структура проекта
 
