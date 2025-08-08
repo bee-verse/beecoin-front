@@ -73,7 +73,7 @@ const setupScene = () => {
 
   // Setup DRACOLoader for compressed models
   const dracoLoader = new DRACOLoader()
-  dracoLoader.setDecoderPath('/node_modules/three/examples/jsm/libs/draco/')
+  dracoLoader.setDecoderPath('/draco/')
   // Preload the decoder
   dracoLoader.preload()
 

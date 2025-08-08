@@ -45,6 +45,43 @@ npm run dev
 npm run build
 ```
 
+## Деплой на Vercel
+
+Для правильной работы 3D-модели и DRACO декодера при деплое на Vercel необходимо использовать файл `vercel.json` в корне проекта:
+
+```json
+{
+  "version": 2,
+  "routes": [
+    { "handle": "filesystem" },
+    { "src": "/draco/(.*)", "dest": "/draco/$1" },
+    { "src": "/models/(.*)", "dest": "/models/$1" }
+  ],
+  "headers": [
+    {
+      "source": "/draco/(.*)",
+      "headers": [
+        { "key": "Access-Control-Allow-Origin", "value": "*" },
+        { "key": "Access-Control-Allow-Methods", "value": "GET, OPTIONS" },
+        { "key": "Access-Control-Allow-Headers", "value": "X-Requested-With, Content-Type, Accept" },
+        { "key": "Cache-Control", "value": "public, max-age=31536000, immutable" }
+      ]
+    },
+    {
+      "source": "/models/(.*)",
+      "headers": [
+        { "key": "Access-Control-Allow-Origin", "value": "*" },
+        { "key": "Access-Control-Allow-Methods", "value": "GET, OPTIONS" },
+        { "key": "Access-Control-Allow-Headers", "value": "X-Requested-With, Content-Type, Accept" },
+        { "key": "Cache-Control", "value": "public, max-age=31536000, immutable" }
+      ]
+    }
+  ]
+}
+```
+
+Этот файл настраивает маршрутизацию для директорий `/draco/` и `/models/`, что необходимо для корректной загрузки DRACO декодера и 3D-модели пчелы.
+
 ## Структура проекта
 
 ```
