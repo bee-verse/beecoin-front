@@ -5,8 +5,7 @@ import { useI18n } from 'vue-i18n'
 import { ref, onMounted, computed } from 'vue'
 // Import the 3D bee component instead of SVG
 import BeeMesh from '@/components/BeeMesh.vue'
-import { getTelegramUser, isRunningInTelegram } from '@/utils/telegram/twa'
-import MainButton from '@/components/telegram/MainButton.vue'
+import { getTelegramUser } from '@/utils/telegram/twa'
 
 const { t } = useI18n()
 
@@ -96,14 +95,6 @@ const tapBee = (event?: Event) => {
           <div class="spinner"></div>
         </div>
       </div>
-
-      <!-- Используем MainButton только если приложение запущено в Telegram и модель загружена -->
-      <MainButton
-        v-if="isRunningInTelegram() && modelLoaded"
-        :text="t('home.tapBee')"
-        :visible="modelLoaded"
-        @click="tapBee"
-      />
     </div>
   </PageContainer>
 </template>
