@@ -2,7 +2,7 @@ export default {
   navigation: {
     home: 'Home',
     tasks: 'Tasks',
-    profile: 'Profile'
+    profile: 'Profile',
   },
   home: {
     title: 'Home',
@@ -12,13 +12,13 @@ export default {
     tapInstruction: 'Tap the bee to earn BeeCoin!',
     tapCount: 'Total Taps',
     tapRate: 'Max Rate',
-    tapBee: 'Tap Bee'
+    tapBee: 'Tap Bee',
   },
   tasks: {
     title: 'Tasks',
     description: 'Complete tasks to earn BeeCoin rewards',
     available: 'Available Tasks',
-    empty: 'No tasks available at the moment. Check back later!'
+    empty: 'No tasks available at the moment. Check back later!',
   },
   profile: {
     title: 'Profile',
@@ -27,6 +27,6 @@ export default {
     balance: 'Beecoin Balance',
     completedTasks: 'Completed Tasks',
     taps: 'Total Taps',
-    openTelegram: 'Open Telegram Profile'
-  }
+    openTelegram: 'Open Telegram Profile',
+  },
 }

@@ -3,13 +3,13 @@
  */
 
 // Экспорт функций для работы с задачами
-export * from './tasks';
+export * from './tasks'
 
 // Экспорт функций для работы с пользователями
-export * from './users';
+export * from './users'
 
 // Экспорт функций для работы с балансом
-export * from './tap';
+export * from './tap'
 
 // Экспорт функций для работы с задачами пользователей
-export * from './userTasks';
+export * from './userTasks'

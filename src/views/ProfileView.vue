@@ -13,10 +13,12 @@ const { t } = useI18n()
 const telegramUser = ref(getTelegramUser())
 const username = computed(() => {
   if (telegramUser.value) {
-    return telegramUser.value.username || 
-           `${telegramUser.value.first_name} ${telegramUser.value.last_name || ''}`;
+    return (
+      telegramUser.value.username ||
+      `${telegramUser.value.first_name} ${telegramUser.value.last_name || ''}`
+    )
   }
-  return 'Guest';
+  return 'Guest'
 })
 
 const balance = ref(0)
@@ -51,7 +53,7 @@ const openTelegramProfile = () => {
   <PageContainer>
     <!-- Используем BackButton только если приложение запущено в Telegram -->
     <BackButton v-if="isRunningInTelegram()" />
-    
+
     <div class="profile-container p-4">
       <h1 class="text-2xl font-bold mb-4 text-bee-black">{{ t('profile.title') }}</h1>
 

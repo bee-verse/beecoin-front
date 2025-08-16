@@ -1,0 +1,47 @@
+name: Lint (ESLint & Prettier)
+
+on:
+  pull_request:
+    branches:
+      - main
+    paths:
+      - '**/*.ts'
+      - '**/*.tsx'
+      - '**/*.js'
+      - '**/*.jsx'
+      - '**/*.vue'
+      - '**/*.json'
+      - '**/*.css'
+      - '**/*.scss'
+      - 'package.json'
+      - 'package-lock.json'
+      - '.eslintrc*'
+      - '.prettierrc*'
+
+jobs:
+  lint:
+    name: Run ESLint & Prettier
+    runs-on: ubuntu-latest
+
+    permissions:
+      contents: read
+      pull-requests: read
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Use Node.js 20
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: 'npm'
+
+      - name: Install deps (CI)
+        run: npm ci
+
+      - name: ESLint
+        run: npm run lint:check
+
+      - name: Prettier (check)
+        run: npm run format:check

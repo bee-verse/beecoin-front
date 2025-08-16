@@ -1,5 +1,5 @@
-import { supabase } from '../supabase';
-import type { User, ApiResponse } from '../types';
+import { supabase } from '../supabase'
+import type { User, ApiResponse } from '../types'
 
 /**
  * Обновляет баланс пользователя в базе данных Supabase
@@ -7,26 +7,29 @@ import type { User, ApiResponse } from '../types';
  * @param amount - Сумма, на которую нужно изменить баланс (положительная для пополнения, отрицательная для списания)
  * @returns Promise с результатом операции
  */
-export async function updateUserBalance(userId: string, amount: number): Promise<ApiResponse<User>> {
+export async function updateUserBalance(
+  userId: string,
+  amount: number,
+): Promise<ApiResponse<User>> {
   try {
     // Сначала получаем текущий баланс пользователя
     const { data: userData, error: fetchError } = await supabase
       .from('users')
       .select('balance')
       .eq('id', userId)
-      .single();
+      .single()
 
     if (fetchError) {
-      throw fetchError;
+      throw fetchError
     }
 
     if (!userData) {
-      throw new Error('Пользователь не найден');
+      throw new Error('Пользователь не найден')
     }
 
     // Вычисляем новый баланс
-    const currentBalance = userData.balance || 0;
-    const newBalance = currentBalance + amount;
+    const currentBalance = userData.balance || 0
+    const newBalance = currentBalance + amount
 
     // Обновляем баланс пользователя
     const { data, error } = await supabase
@@ -34,16 +37,16 @@ export async function updateUserBalance(userId: string, amount: number): Promise
       .update({ balance: newBalance })
       .eq('id', userId)
       .select()
-      .single();
+      .single()
 
     if (error) {
-      throw error;
+      throw error
     }
 
-    return { data: data as User, error: null };
+    return { data: data as User, error: null }
   } catch (error) {
-    console.error('Ошибка при обновлении баланса:', error);
-    return { data: null, error: error as Error };
+    console.error('Ошибка при обновлении баланса:', error)
+    return { data: null, error: error as Error }
   }
 }
 
@@ -55,9 +58,9 @@ export async function updateUserBalance(userId: string, amount: number): Promise
  */
 export async function addToUserBalance(userId: string, amount: number): Promise<ApiResponse<User>> {
   if (amount <= 0) {
-    return { data: null, error: new Error('Сумма пополнения должна быть положительной') };
+    return { data: null, error: new Error('Сумма пополнения должна быть положительной') }
   }
-  return updateUserBalance(userId, amount);
+  return updateUserBalance(userId, amount)
 }
 
 /**
@@ -66,33 +69,36 @@ export async function addToUserBalance(userId: string, amount: number): Promise<
  * @param amount - Сумма списания (должна быть положительной)
  * @returns Promise с результатом операции
  */
-export async function subtractFromUserBalance(userId: string, amount: number): Promise<ApiResponse<User>> {
+export async function subtractFromUserBalance(
+  userId: string,
+  amount: number,
+): Promise<ApiResponse<User>> {
   if (amount <= 0) {
-    return { data: null, error: new Error('Сумма списания должна быть положительной') };
+    return { data: null, error: new Error('Сумма списания должна быть положительной') }
   }
-  
+
   // Получаем текущий баланс для проверки
   const { data: userData, error: fetchError } = await supabase
     .from('users')
     .select('balance')
     .eq('id', userId)
-    .single();
+    .single()
 
   if (fetchError) {
-    return { data: null, error: fetchError };
+    return { data: null, error: fetchError }
   }
 
   if (!userData) {
-    return { data: null, error: new Error('Пользователь не найден') };
+    return { data: null, error: new Error('Пользователь не найден') }
   }
 
-  const currentBalance = userData.balance || 0;
-  
+  const currentBalance = userData.balance || 0
+
   // Проверяем, достаточно ли средств
   if (currentBalance < amount) {
-    return { data: null, error: new Error('Недостаточно средств на балансе') };
+    return { data: null, error: new Error('Недостаточно средств на балансе') }
   }
-  
+
   // Списываем средства (передаем отрицательное значение)
-  return updateUserBalance(userId, -amount);
+  return updateUserBalance(userId, -amount)
 }

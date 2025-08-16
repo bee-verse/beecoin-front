@@ -2,13 +2,13 @@
 
 :root {
   /* Define your bee-themed colors as CSS variables */
-  --color-bee-yellow: #FFB300;
+  --color-bee-yellow: #ffb300;
   --color-bee-black: #212121;
-  --color-bee-orange: #FF5500;
-  --color-bee-amber: #FF9500;
-  --color-bee-gold: #FFB000;
-  --color-bee-honey: #FF8000;
-  
+  --color-bee-orange: #ff5500;
+  --color-bee-amber: #ff9500;
+  --color-bee-gold: #ffb000;
+  --color-bee-honey: #ff8000;
+
   /* Text colors */
   --color-text-base: #212121;
   --color-text-muted: #4b5563;

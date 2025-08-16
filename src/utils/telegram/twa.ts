@@ -66,10 +66,6 @@ export function isRunningInTelegram(): boolean {
   return !!WebApp.initData
 }
 
-
-
-
-
 export default {
   initTelegramWebApp,
   getTelegramUser,

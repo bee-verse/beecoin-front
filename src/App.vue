@@ -8,7 +8,7 @@ import LanguageSwitcher from './components/LanguageSwitcher.vue'
   <div class="app-container min-h-screen pb-16">
     <!-- Language Switcher -->
     <LanguageSwitcher />
-    
+
     <!-- Main content area -->
     <RouterView />
 
