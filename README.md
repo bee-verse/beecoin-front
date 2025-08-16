@@ -2,7 +2,7 @@
 
 ## Описание
 
-BeeCoin - это Telegram Web App (TWA), которое позволяет пользователям зарабатывать виртуальную валюту BeeCoin, нажимая на 3D-модель пчелы. Приложение интегрируется с Telegram и использует нативные элементы интерфейса Telegram, такие как MainButton и BackButton.
+BeeCoin - это Telegram Web App (TWA), которое позволяет пользователям зарабатывать виртуальную валюту BeeCoin, нажимая на 3D-модель пчелы. Приложение интегрируется с Telegram.
 
 ## Технологии
 
@@ -14,25 +14,7 @@ BeeCoin - это Telegram Web App (TWA), которое позволяет по�
 - Vue I18n для интернационализации
 - @twa-dev/sdk для интеграции с Telegram Web App
 
-## Интеграция с Telegram Bot
-
-Для интеграции с Telegram Bot необходимо:
-
-1. Создать бота через @BotFather в Telegram
-2. Настроить WebApp URL в настройках бота
-3. Разместить приложение на хостинге с поддержкой HTTPS
-4. Указать URL приложения в настройках бота
-
-### Настройка WebApp URL через BotFather
-
-1. Откройте чат с @BotFather в Telegram
-2. Отправьте команду `/mybots`
-3. Выберите вашего бота из списка
-4. Выберите "Bot Settings" > "Menu Button" или "Menu Commands"
-5. Добавьте команду с типом "web_app"
-6. Укажите URL вашего приложения
-
-## Установка и запуск
+## Установка и локальный запуск
 
 ```sh
 # Установка зависимостей
@@ -40,48 +22,17 @@ npm install
 
 # Запуск сервера разработки
 npm run dev
-
-# Сборка для продакшена
-npm run build
 ```
 
-## Деплой на Vercel
-
-Для правильной работы 3D-модели и DRACO декодера при деплое на Vercel необходимо использовать файл `vercel.json` в корне проекта:
-
-```json
-{
-  "version": 2,
-  "rewrites": [
-    { "source": "/draco/(.*)", "destination": "/draco/$1" },
-    { "source": "/models/(.*)", "destination": "/models/$1" }
-  ],
-  "headers": [
-    {
-      "source": "/draco/(.*)",
-      "headers": [
-        { "key": "Access-Control-Allow-Origin", "value": "*" },
-        { "key": "Access-Control-Allow-Methods", "value": "GET, OPTIONS" },
-        { "key": "Access-Control-Allow-Headers", "value": "X-Requested-With, Content-Type, Accept" },
-        { "key": "Cache-Control", "value": "public, max-age=31536000, immutable" }
-      ]
-    },
-    {
-      "source": "/models/(.*)",
-      "headers": [
-        { "key": "Access-Control-Allow-Origin", "value": "*" },
-        { "key": "Access-Control-Allow-Methods", "value": "GET, OPTIONS" },
-        { "key": "Access-Control-Allow-Headers", "value": "X-Requested-With, Content-Type, Accept" },
-        { "key": "Cache-Control", "value": "public, max-age=31536000, immutable" }
-      ]
-    }
-  ]
-}
-```
-
-Этот файл настраивает маршрутизацию для директорий `/draco/` и `/models/`, что необходимо для корректной загрузки DRACO декодера и 3D-модели пчелы.
-
-> **Важно:** В конфигурации Vercel нельзя одновременно использовать поле `routes` вместе с полями `rewrites`, `redirects`, `headers`, `cleanUrls` или `trailingSlash`. Поэтому мы используем `rewrites` вместо `routes` для настройки маршрутизации.
+## Как протестировать интеграцию с Telegram
+1. Создать и запушить ветку с кодом
+2. Подождать, пока vercel выкатит на preview-стенд вашу версию приложения
+   <img width="1023" height="520" alt="image" src="https://github.com/user-attachments/assets/c92c208c-9032-4a5a-80a4-5d3d3c6349e3" />
+3. Создать личного Telegram бота для тестирования через @BotFather
+4. Указать в настройках бота Web App URL равный ссылке на preview-стенд
+5. Для переключения между ветками на preview-стенде воспользоваться vercel dev tools
+   <img width="710" height="631" alt="image" src="https://github.com/user-attachments/assets/47cd0a31-2afd-4637-9d4a-ddd754e4ac4b" />
+7. Приложение можно тестировать вместе с ботом!
 
 ## Структура проекта
 
@@ -99,13 +50,6 @@ src/
 │   └── telegram/      # Утилиты для работы с Telegram Web App
 └── views/             # Компоненты страниц
 ```
-
-## Особенности Telegram Web App
-
-- Приложение автоматически адаптируется к теме Telegram (светлая/темная)
-- Использует нативные элементы интерфейса Telegram (MainButton, BackButton)
-- Получает данные пользователя из Telegram
-- Поддерживает многоязычность (русский и английский)
 
 ## Лицензия
 
