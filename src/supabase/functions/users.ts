@@ -1,6 +1,8 @@
 import { supabase } from '../supabase'
 import type { User, ApiResponse } from '../types'
 
+// TODO: testing
+
 /**
  * Получает пользователя по ID
  * @param userId - ID пользователя
