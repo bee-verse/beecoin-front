@@ -25,6 +25,7 @@ npm run dev
 ```
 
 ## Как протестировать интеграцию с Telegram
+
 1. Создать и запушить ветку с кодом
 2. Подождать, пока vercel выкатит на preview-стенд вашу версию приложения
    <img width="1023" height="520" alt="image" src="https://github.com/user-attachments/assets/c92c208c-9032-4a5a-80a4-5d3d3c6349e3" />
@@ -32,7 +33,7 @@ npm run dev
 4. Указать в настройках бота Web App URL равный ссылке на preview-стенд
 5. Для переключения между ветками на preview-стенде воспользоваться vercel dev tools
    <img width="710" height="631" alt="image" src="https://github.com/user-attachments/assets/47cd0a31-2afd-4637-9d4a-ddd754e4ac4b" />
-7. Приложение можно тестировать вместе с ботом!
+6. Приложение можно тестировать вместе с ботом!
 
 ## Структура проекта
 
