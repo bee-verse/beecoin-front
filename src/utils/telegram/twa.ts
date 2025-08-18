@@ -25,13 +25,22 @@ export function initTelegramWebApp() {
 
 /**
  * Получение данных пользователя из Telegram
+ * Если приложение запущено не в Telegram, возвращает мок-данные для локального тестирования
  */
 export function getTelegramUser() {
   if (WebApp.initData) {
     return WebApp.initDataUnsafe.user
   }
 
-  return null
+  // Мок-данные пользователя для локального тестирования
+  return {
+    id: 12345678,
+    first_name: 'Test',
+    last_name: 'User',
+    username: 'testuser',
+    language_code: 'ru',
+    is_premium: true
+  }
 }
 
 /**

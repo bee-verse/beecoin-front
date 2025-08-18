@@ -13,3 +13,5 @@ export * from './tap'
 
 // Экспорт функций для работы с задачами пользователей
 export * from './userTasks'
+
+export * from './auth'

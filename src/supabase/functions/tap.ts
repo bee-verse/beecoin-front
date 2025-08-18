@@ -12,38 +12,44 @@ export async function updateUserBalance(
   amount: number,
 ): Promise<ApiResponse<User>> {
   try {
-    // Сначала получаем текущий баланс пользователя
-    const { data: userData, error: fetchError } = await supabase
+    // Сначала получаем текущий баланс пользователя без использования .single()
+    const { data: usersData, error: fetchError } = await supabase
       .from('users')
       .select('balance')
       .eq('id', userId)
-      .single()
 
     if (fetchError) {
       throw fetchError
     }
 
-    if (!userData) {
+    if (!usersData || usersData.length === 0) {
       throw new Error('Пользователь не найден')
     }
+    
+    const userData = usersData[0]
 
     // Вычисляем новый баланс
     const currentBalance = userData.balance || 0
     const newBalance = currentBalance + amount
 
-    // Обновляем баланс пользователя
+    // Обновляем баланс пользователя без использования .single()
     const { data, error } = await supabase
       .from('users')
       .update({ balance: newBalance })
       .eq('id', userId)
       .select()
-      .single()
 
     if (error) {
       throw error
     }
 
-    return { data: data as User, error: null }
+    // Проверяем, что data - это массив и в нем есть элементы
+    if (!data || !Array.isArray(data) || data.length === 0) {
+      throw new Error('Не удалось получить обновленные данные пользователя')
+    }
+
+    // Возвращаем первый элемент массива как User
+    return { data: data[0] as User, error: null }
   } catch (error) {
     console.error('Ошибка при обновлении баланса:', error)
     return { data: null, error: error as Error }
@@ -77,20 +83,21 @@ export async function subtractFromUserBalance(
     return { data: null, error: new Error('Сумма списания должна быть положительной') }
   }
 
-  // Получаем текущий баланс для проверки
-  const { data: userData, error: fetchError } = await supabase
+  // Получаем текущий баланс для проверки без использования .single()
+  const { data: usersData, error: fetchError } = await supabase
     .from('users')
     .select('balance')
     .eq('id', userId)
-    .single()
 
   if (fetchError) {
     return { data: null, error: fetchError }
   }
 
-  if (!userData) {
+  if (!usersData || usersData.length === 0) {
     return { data: null, error: new Error('Пользователь не найден') }
   }
+  
+  const userData = usersData[0]
 
   const currentBalance = userData.balance || 0
 

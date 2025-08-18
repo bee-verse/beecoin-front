@@ -6,6 +6,11 @@ import { ref, onMounted, computed } from 'vue'
 // Import the 3D bee component instead of SVG
 import BeeMesh from '@/components/BeeMesh.vue'
 import { getTelegramUser } from '@/utils/telegram/twa'
+// Импортируем методы API для работы с балансом пользователя
+import { addToUserBalance } from '@/supabase/functions/tap'
+// Импортируем клиент Supabase
+import { supabase } from '@/supabase/supabase'
+import { loginWithTelegramWebApp } from '@/supabase/functions'
 
 const { t } = useI18n()
 
@@ -18,6 +23,9 @@ const username = computed(() => {
   return 'Bee Friend'
 })
 
+// ID пользователя для Supabase
+const userId = ref('')
+
 // BeeCoin balance and stats
 const balance = ref(0)
 const tapCount = ref(0)
@@ -26,7 +34,11 @@ const tapCooldown = ref(10) // Reduced cooldown in milliseconds to allow faster 
 const modelLoaded = ref(false)
 const isModelLoading = ref(true) // Добавляем состояние загрузки модели
 
-// Load saved data from localStorage
+// Состояние загрузки и ошибки API
+const isLoading = ref(false)
+const apiError = ref<Error | null>(null)
+
+// Load saved data from localStorage and initialize user data
 onMounted(() => {
   const savedBalance = localStorage.getItem('beecoinBalance')
   if (savedBalance) {
@@ -37,10 +49,12 @@ onMounted(() => {
   if (savedTapCount) {
     tapCount.value = parseInt(savedTapCount)
   }
+
+  loginWithTelegramWebApp()
 })
 
 // Handle bee tap
-const tapBee = (event?: Event) => {
+const tapBee = async (event?: Event) => {
   // Prevent default behavior for touch events to avoid delays
   if (event) {
     event.preventDefault()
@@ -54,14 +68,45 @@ const tapBee = (event?: Event) => {
   // Update last tap time
   lastTapTime.value = now
 
-  // Always update balance and tap count regardless of animation state
-  balance.value += 0.01
+  // Обновляем локальные данные
+  const tapAmount = 0.01
+  balance.value += tapAmount
   balance.value = parseFloat(balance.value.toFixed(2)) // Round to 2 decimal places
   tapCount.value++
 
   // Save to localStorage
   localStorage.setItem('beecoinBalance', balance.value.toString())
   localStorage.setItem('beecoinTapCount', tapCount.value.toString())
+
+  // Обновляем баланс в Supabase, если пользователь авторизован
+  if (userId.value) {
+    try {
+      isLoading.value = true
+      apiError.value = null
+
+      // Вызываем API для обновления баланса
+      const { data, error } = await addToUserBalance(userId.value, tapAmount)
+
+      if (error) {
+        throw error
+      }
+
+      // Также обновляем количество тапов в базе данных
+      const { error: tapsError } = await supabase
+        .from('users')
+        .update({ taps: tapCount.value })
+        .eq('id', userId.value)
+
+      if (tapsError) {
+        console.error('Ошибка при обновлении количества тапов:', tapsError)
+      }
+    } catch (error) {
+      console.error('Ошибка при обновлении баланса:', error)
+      apiError.value = error as Error
+    } finally {
+      isLoading.value = false
+    }
+  }
 }
 </script>
 
@@ -76,6 +121,12 @@ const tapBee = (event?: Event) => {
       >
         <p class="text-lg font-semibold">{{ t('home.balance') }}</p>
         <p class="text-3xl font-bold text-bee-honey">{{ balance }} BEE</p>
+        <div v-if="isLoading" class="text-sm text-amber-600 mt-1">
+          <span>{{ t('common.loading') || 'Обновление...' }}</span>
+        </div>
+        <div v-if="apiError" class="text-sm text-red-600 mt-1">
+          <span>{{ apiError.message }}</span>
+        </div>
       </div>
 
       <div class="bee-container relative mb-8 w-full mx-auto">
