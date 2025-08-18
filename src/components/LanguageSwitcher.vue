@@ -2,7 +2,7 @@
 import { ref } from 'vue'
 import { getLocale, setLocale } from '@/i18n'
 
-type SupportedLocale = 'en' | 'ru';
+type SupportedLocale = 'en' | 'ru'
 
 const currentLocale = ref<SupportedLocale>(getLocale())
 
