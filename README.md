@@ -27,9 +27,12 @@ npm run dev
 ## Как тестировать интеграцию с Telegram в режиме разработки
 1. Запустить приложения на localhost
 2. Установить ngrok https://dashboard.ngrok.com/get-started/setup
-3. Через ngrok прокинуть туннель на https сервер: `ngrok http http://localhost:5173`
-4. Создать личного Telegram бота для тестирования через @BotFather
-5. Указать в настройках бота Web App URL равный ссылке на туннель от ngrok
+3. Настроить себе постоянный url (Static Domain) в ngrok
+4. Через ngrok прокинуть туннель на https сервер: `ngrok http http://localhost:5173`
+5. Создать личного Telegram бота для тестирования через @BotFather
+6. Указать в настройках бота Web App URL равный ссылке на туннель от ngrok
+7. Токен от бота указать в файле .env в виде переменной VITE_TELEGRAM_BOT_TOKEN
+8. Попросить @the_real_daniil скинуть тебе другие переменные из .env и добавить домен ngrok в список разрешенных
       
 
 ## Как протестировать интеграцию с Telegram на preview
