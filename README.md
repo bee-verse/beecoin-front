@@ -24,7 +24,15 @@ npm install
 npm run dev
 ```
 
-## Как протестировать интеграцию с Telegram
+## Как тестировать интеграцию с Telegram в режиме разработки
+1. Запустить приложения на localhost
+2. Установить ngrok https://dashboard.ngrok.com/get-started/setup
+3. Через ngrok прокинуть туннель на https сервер: `ngrok http http://localhost:5173`
+4. Создать личного Telegram бота для тестирования через @BotFather
+5. Указать в настройках бота Web App URL равный ссылке на туннель от ngrok
+      
+
+## Как протестировать интеграцию с Telegram на preview
 
 1. Создать и запушить ветку с кодом
 2. Подождать, пока vercel выкатит на preview-стенд вашу версию приложения
