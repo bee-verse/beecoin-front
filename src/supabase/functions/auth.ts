@@ -9,7 +9,10 @@ export async function loginWithTelegramWebApp() {
   // 2) Отправляем как raw body в Edge Function
   const res = await fetch(`${import.meta.env.VITE_SUPABASE_URL}/functions/v1/auth-telegram`, {
     method: 'POST',
-    headers: { 'Content-Type': 'text/plain' },
+    headers: {
+      'Content-Type': 'text/plain',
+      'X-Telegram-Bot-Token': import.meta.env.VITE_TELEGRAM_BOT_TOKEN,
+    },
     body: initData, // важно: без JSON-обёртки, это URLSearchParams строка
   })
 

@@ -20,5 +20,13 @@ export default defineConfig({
       'Cross-Origin-Opener-Policy': 'same-origin',
       'Cross-Origin-Resource-Policy': 'cross-origin',
     },
+    host: true, // чтобы сервер слушал 0.0.0.0
+    port: 5173,
+    strictPort: true,
+    cors: true,
+    hmr: {
+      clientPort: 443, // важно при туннелировании (ngrok/cloudflared)
+    },
+    allowedHosts: true,
   },
 })
