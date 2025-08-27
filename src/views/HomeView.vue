@@ -6,8 +6,6 @@ import { ref, onMounted, computed } from 'vue'
 // Import the 3D bee component instead of SVG
 import BeeMesh from '@/components/BeeMesh.vue'
 import { getTelegramUser } from '@/utils/telegram/twa'
-// Импортируем методы API для работы с балансом пользователя
-import { addToUserBalance } from '@/supabase/functions/tap'
 // Импортируем клиент Supabase
 import { supabase } from '@/supabase/supabase'
 import { loginWithTelegramWebApp } from '@/supabase/functions'
@@ -22,9 +20,6 @@ const username = computed(() => {
   }
   return 'Bee Friend'
 })
-
-// ID пользователя для Supabase
-const userId = ref('')
 
 // BeeCoin balance and stats
 const balance = ref(0)
@@ -77,36 +72,6 @@ const tapBee = async (event?: Event) => {
   // Save to localStorage
   localStorage.setItem('beecoinBalance', balance.value.toString())
   localStorage.setItem('beecoinTapCount', tapCount.value.toString())
-
-  // Обновляем баланс в Supabase, если пользователь авторизован
-  if (userId.value) {
-    try {
-      isLoading.value = true
-      apiError.value = null
-
-      // Вызываем API для обновления баланса
-      const { data, error } = await addToUserBalance(userId.value, tapAmount)
-
-      if (error) {
-        throw error
-      }
-
-      // Также обновляем количество тапов в базе данных
-      const { error: tapsError } = await supabase
-        .from('users')
-        .update({ taps: tapCount.value })
-        .eq('id', userId.value)
-
-      if (tapsError) {
-        console.error('Ошибка при обновлении количества тапов:', tapsError)
-      }
-    } catch (error) {
-      console.error('Ошибка при обновлении баланса:', error)
-      apiError.value = error as Error
-    } finally {
-      isLoading.value = false
-    }
-  }
 }
 </script>
 
